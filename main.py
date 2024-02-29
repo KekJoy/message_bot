@@ -21,6 +21,9 @@ async def main():
 
 @rt.message(Command('start'))
 async def handle_start_chat(message: types.Message):
+    if not message.is_topic_message and message.chat.id == settings.CHAT_ID:
+        return
+
     with async_session_maker() as session:
         user = session.execute(text(f'select * from topic where user_id == {message.from_user.id}')).scalars().all()
     if not user:
@@ -66,6 +69,9 @@ async def handle_close_forum_topic(message: types.Message):
 
 @rt.message()
 async def handle_chat_message(message: types.Message):
+    if not message.is_topic_message and message.chat.id == settings.CHAT_ID:
+        return
+
     if message.is_topic_message:
         with async_session_maker() as session:
             user_id = session.execute(text(
