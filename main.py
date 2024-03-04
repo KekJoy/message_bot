@@ -49,7 +49,7 @@ async def handle_create_forum_topic(message: types.Message):
             text(f"select user_id from topic where message_thread_id={message.message_thread_id}")).scalars().all()[0]
         name = session.execute(
             text(f"select name from topic where message_thread_id={message.message_thread_id}")).scalars().all()[0]
-    await bot.send_message(chat_id=user_id, text=f"Ожидайте сообщения от администратора.")
+    await bot.send_message(chat_id=user_id, text=f"Ожидайте сообщения от администратора!")
 
 
 @rt.message(F.forum_topic_closed)
