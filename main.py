@@ -49,7 +49,7 @@ async def handle_create_forum_topic(message: types.Message):
             text(f"select user_id from topic where message_thread_id={message.message_thread_id}")).scalars().all()[0]
         name = session.execute(
             text(f"select name from topic where message_thread_id={message.message_thread_id}")).scalars().all()[0]
-    await bot.send_message(chat_id=user_id, text=f"Тема \"{name}\" создана. Ожидайте сообщения от администратора.")
+    await bot.send_message(chat_id=user_id, text=f"Ожидайте сообщения от администратора.")
 
 
 @rt.message(F.forum_topic_closed)
@@ -73,36 +73,35 @@ async def send_message(chat_id: int, message: types.Message, message_thread_id: 
         case ContentType.TEXT:
             await bot.send_message(chat_id=chat_id,
                                    message_thread_id=message_thread_id,
-                                   text=f"{text} {message.text}")
+                                   text=f"{message.text}")
         case ContentType.PHOTO:
             await bot.send_photo(chat_id=chat_id,
                                  message_thread_id=message_thread_id,
                                  photo=message.photo[0].file_id,
-                                 caption=f'{text} {"" if message.caption is None else message.caption}')
+                                 caption=f'{"" if message.caption is None else message.caption}')
         case ContentType.VIDEO:
             await bot.send_video(chat_id=chat_id,
                                  message_thread_id=message_thread_id,
                                  video=message.video.file_id,
-                                 caption=f'{text} {"" if message.caption is None else message.caption}')
+                                 caption=f'{"" if message.caption is None else message.caption}')
         case ContentType.AUDIO:
             await bot.send_audio(chat_id=chat_id,
                                  message_thread_id=message_thread_id,
                                  audio=message.audio.file_id,
-                                 caption=f'{text} {"" if message.caption is None else message.caption}')
+                                 caption=f'{"" if message.caption is None else message.caption}')
         case ContentType.DOCUMENT:
             await bot.send_document(chat_id=chat_id,
                                     message_thread_id=message_thread_id,
                                     document=message.document.file_id,
-                                    caption=f'{text} {"" if message.caption is None else message.caption}')
+                                    caption=f'{"" if message.caption is None else message.caption}')
         case ContentType.VOICE:
             await bot.send_voice(chat_id=chat_id,
                                  message_thread_id=message_thread_id,
                                  voice=message.voice.file_id,
-                                 caption=f'{text} {"" if message.caption is None else message.caption}')
+                                 caption=f'{"" if message.caption is None else message.caption}')
         case ContentType.CONTACT:
             await bot.send_message(chat_id=chat_id,
-                                   message_thread_id=message_thread_id,
-                                   text=f"{text}")
+                                   message_thread_id=message_thread_id)
             await bot.send_contact(chat_id=chat_id,
                                    message_thread_id=message_thread_id,
                                    first_name=message.contact.first_name,
