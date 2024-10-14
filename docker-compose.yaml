@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  aiogram-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aiogram_chat_bot
+    restart: unless-stopped
+    environment:
+      BOT_TOKEN: ${BOT_TOKEN}  # Токен вашего бота
+      CHAT_ID: ${CHAT_ID}
+    volumes:
+      - ./:/app  # Монтируем локальную директорию в контейнер
+    networks:
+      - bot-net
+
+networks:
+  bot-net:
+    driver: bridge
